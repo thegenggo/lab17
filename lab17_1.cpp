@@ -20,20 +20,78 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
-
+void importDataFromFile(string filename, vector<string> &names, vector<int> &scores, vector<char> &grades){
+    ifstream fin(filename);
+    string text;
+    int i = 0;
+    int a,b,c;
+    char name[100];
+    char format[] ="%[^:]: %d %d %d";
+    while(getline(fin,text))
+    {
+        const char * textConverted = text.c_str();
+        sscanf(textConverted,format,name,&a,&b,&c);
+        string nameConverted = name;
+        names.push_back(nameConverted);
+        scores.push_back(a+b+c);
+        grades.push_back(score2grade(a+b+c));
+        i++;
+    }
+    
 }
 
-void getCommand(){
-
+void getCommand(string &command,string &key){
+    string text;
+    char format[] = "%s %[^\n]";
+    char command2[50];
+    char key2[50];
+    cout << "Please input your command: ";
+    getline(cin,text);
+    const char * textConverted = text.c_str();
+    sscanf(textConverted,format,command2,key2); 
+    command = command2;
+    key = key2;
 }
 
-void searchName(){
-
+void searchName(vector<string> names, vector<int> scores, vector<char> grades, string key){
+    unsigned int i = 0;
+    bool trigger = 0;
+    cout << "---------------------------------\n";
+    while(i < names.size())
+    {
+        if(key == toUpperStr(names[i]))
+        {
+            cout << names[i] << "'s score = " << scores[i] << "\n";
+            cout << names[i] << "'s grade = " << grades[i] << "\n";
+            trigger = 1;
+        }
+        i++;
+    }
+    if(!trigger)
+    {
+        cout << "Cannot found.\n";
+    }
+    cout << "---------------------------------\n";
 }
 
-void searchGrade(){
-
+void searchGrade(vector<string> names, vector<int> scores, vector<char> grades, string key){
+    unsigned int i = 0;
+    bool trigger = 0;
+    cout << "---------------------------------\n";
+    while(i < grades.size())
+    {
+        if(key[0] == grades[i])
+        {
+            cout << names[i] << " (" << scores[i] << ")\n";
+            trigger = 1;
+        }
+        i++;
+    }
+    if(!trigger)
+    {
+        cout << "Cannot found.\n";
+    }
+     cout << "---------------------------------\n";
 }
 
 
